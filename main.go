@@ -9,6 +9,8 @@ import (
 	"os"
 	"os/exec"
 
+	browser "github.com/pkg/browser"
+
 	"github.com/makiuchi-d/gozxing"
 	"github.com/makiuchi-d/gozxing/qrcode"
 )
@@ -51,6 +53,11 @@ func main() {
 	result, err := qrReader.Decode(bmp, nil)
 	if err != nil {
 		log.Println(err)
+		os.Exit(1)
+	}
+
+	if browser.OpenURL(result.GetText()) != nil {
+		log.Println("cannot Open %V", result)
 		os.Exit(1)
 	}
 
